@@ -20,25 +20,27 @@ namespace UCLib
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class UCUpDown : UserControl
+    public partial class UCUpDown : UserControl,MyUCInterface
     {
         // public event MyValueChangedDelegate? ValueChangedInformOthers;
-        public EventHandler<MyEventArgs> ValueChangedInformOthers;
-        private double _UCValue;
+        public MyModel UCModel { get; set; }
+        //public EventHandler<MyEventArgs> ValueChangedInformOthers;
+        //private double _UCValue;
 
-        public double UCValue
-        {
-            get { return _UCValue; }
-            set {
-                if (_UCValue == value) return;
-                
-                _UCValue = value;
-                lblValue.Content = value.ToString();
-                double delta = _UCValue - value;
-                //Wenn sich jemand beim Delegate angemeldet hat, dann wird er mittels delegate / Event informiert
-                ValueChangedInformOthers?.Invoke(this, new MyEventArgs { Value = _UCValue,Delta = delta,Description = "No Description"});
-            }
-        }
+        //public double UCValue
+        //{
+        //    get { return _UCValue; }
+        //    set
+        //    {
+        //        if (_UCValue == value) return;
+
+        //        _UCValue = value;
+        //        lblValue.Content = value.ToString();
+        //        double delta = _UCValue - value;
+        //        Wenn sich jemand beim Delegate angemeldet hat, dann wird er mittels delegate / Event informiert
+        //        ValueChangedInformOthers?.Invoke(this, new MyEventArgs { Value = _UCValue, Delta = delta, Description = "No Description" });
+        //    }
+        //}
 
         public UCUpDown()
         {
@@ -50,17 +52,20 @@ namespace UCLib
             if(sender is Button)
             {
                 Button? btnSender = sender as Button;
-                if (Double.TryParse(btnSender?.Tag.ToString(),out double delta))
+                if (Double.TryParse(btnSender?.Tag.ToString(),out double delta) && UCModel!=null)
                 {
-                    UCValue += delta;
+                   UCModel.ModelValue += delta;
                 }
             }
         }
         public void ValueChangedFromOutside(object sender, MyEventArgs args)
         {
             //UCValue = newValue;
-            UCValue = args.Value;
-            Console.WriteLine(args.Delta);
+            if(UCModel != null)
+            {
+               lblValue.Content = args.Value.ToString("#0.00");
+            }
+            //Console.WriteLine(args.Delta);
         }
     }
 }

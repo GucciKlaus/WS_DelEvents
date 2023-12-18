@@ -16,9 +16,8 @@ namespace DelegateLib
             get { return _ModelValue; }
             set
             {
-                _ModelValue = value;
-
                 if (_ModelValue == value) return;
+                _ModelValue = value;
                 double delta = _ModelValue - value;
                 _ModelValue = value;
                 //Wenn sich jemand beim Delegate angemeldet hat, dann wird er mittels delegate / Event informiert

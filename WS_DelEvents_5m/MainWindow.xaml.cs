@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DelegateLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,25 @@ namespace WS_DelEvents_5m
             //        }
             //    }
             //}
+
+            //Hier wird einmal das Model-Objekt erstellt und dann an alle MyUCInterface-Controls weitergegeben
+            MyModel modelForAll = new MyModel();
+            foreach (UIElement elem in mainGrid.Children)
+            {
+                //if (elem is UCUpDown)
+                //{
+                //    (elem as UCUpDown).UCModel = modelForAll;
+                //    modelForAll.ValueChangedInformOthers += (elem as UCUpDown).ValueChangedFromOutside;
+                //}
+                if(elem is MyUCInterface)
+                {
+                    (elem as MyUCInterface).UCModel = modelForAll;
+                    modelForAll.ValueChangedInformOthers += (elem as MyUCInterface).ValueChangedFromOutside;
+
+                }
+
+
+            }
         }
     }
 }
